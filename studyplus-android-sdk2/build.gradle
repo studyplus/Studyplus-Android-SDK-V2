@@ -43,7 +43,7 @@ android {
             initWith(buildTypes.debug)
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "API_ENDPOINT", quote("https://external-api.studyplus.jp")
