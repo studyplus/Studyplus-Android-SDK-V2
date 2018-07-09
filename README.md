@@ -32,7 +32,7 @@ or download the latest JAR [via Central Repository](http://search.maven.org/#sea
 
 ## Usage
 
-### setup
+### Setup
 ```
 Studyplus.instance.setup("consumer_key", "consumer_secret")
 ```
