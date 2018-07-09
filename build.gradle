@@ -2,12 +2,12 @@
 
 buildscript {
     ext.kotlin_version = '1.2.50'
-    //TODO:28
     ext.versions = [
-            'compileSdk': 27,
+            'compileSdk': 28,
             'minSdk': 16,
-            'targetSdk': 27,
+            'targetSdk': 28,
             'supportLibrary': '27.1.1',
+            'constraintLayout': '1.1.2',
             'gson': '2.8.2',
             'okhttp': '3.10.0',
             'retrofit' : '2.4.0',
