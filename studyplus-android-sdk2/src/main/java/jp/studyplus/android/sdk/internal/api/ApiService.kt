@@ -3,8 +3,6 @@ package jp.studyplus.android.sdk.internal.api
 import io.reactivex.Observable
 import jp.studyplus.android.sdk.internal.api.response.PostStudyRecordsResponse
 import jp.studyplus.android.sdk.record.StudyRecord
-import okhttp3.Response
-import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface ApiService {
