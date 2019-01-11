@@ -14,9 +14,10 @@ class Studyplus private constructor() {
 
     private var consumerKey: String? = null
     private var consumerSecret: String? = null
+    private var store: CertificationStore? = null
 
     /**
-     * ConsumerKey, ConsumerSecretKeyをStudyplus SDKに設定
+     * ConsumerKey, ConsumerSecretKeyをStudyplus SDKに設定, 更新
      *
      * @since 2.0.0
      */
@@ -31,8 +32,13 @@ class Studyplus private constructor() {
      * @return true: 認証済み、 false: 未認証
      * @since 2.0.0
      */
-    fun isAuthenticated(context: Context): Boolean =
-            CertificationStore.create(context.applicationContext).isAuthenticated()
+    fun isAuthenticated(context: Context): Boolean {
+        if (consumerKey == null || consumerSecret == null) {
+            throw IllegalStateException("Please call setup method before this method call.")
+        }
+        store = CertificationStore.create(context).apply { migration(consumerKey!!) }
+        return store!!.isAuthenticated(consumerKey!!)
+    }
 
     /**
      * [setup]で設定されたConsumerKey, ConsumerSecretKeyによるStudyplus連携認証
@@ -42,6 +48,10 @@ class Studyplus private constructor() {
     fun startAuth(activity: Activity, requestCode: Int) {
         if (consumerKey == null || consumerSecret == null) {
             throw IllegalStateException("Please call setup method before this method call.")
+        }
+
+        if (store == null) {
+            store = CertificationStore.create(activity).apply { migration(consumerKey!!) }
         }
 
         AuthTransit(consumerKey!!, consumerSecret!!).start(activity, requestCode)
@@ -58,7 +68,15 @@ class Studyplus private constructor() {
             return
         }
 
-        CertificationStore.create(context.applicationContext).update(data)
+        if (consumerKey == null) {
+            throw IllegalStateException("Please call setup method before this method call.")
+        }
+
+        if (store == null) {
+            throw IllegalStateException("Please call startAuth method before this method call.")
+        }
+
+        store!!.update(data, consumerKey!!)
     }
 
     /**
@@ -67,13 +85,17 @@ class Studyplus private constructor() {
      * @since 2.0.0
      */
     fun postRecord(context: Context, studyRecord: StudyRecord, listener: OnPostRecordListener?) {
+        if (consumerKey == null) {
+            throw IllegalStateException("Please call setup method before this method call.")
+        }
+
         if (!isAuthenticated(context)) {
             throw IllegalStateException("Please check your application's authentication before this method call.")
         }
 
         runBlocking {
             try {
-                val deferred = ApiClient.postStudyRecords(context, studyRecord)
+                val deferred = ApiClient.postStudyRecords(context, studyRecord, consumerKey!!)
                 val recordId = deferred.await()
                 listener?.onResult(success = true, recordId = recordId)
             } catch (t: Throwable) {
