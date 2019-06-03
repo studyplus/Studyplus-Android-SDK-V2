@@ -1,5 +1,7 @@
 # Studyplus-Android-SDK-V2
 
+**This repository will be deleted. Check [Studyplus-Andorid-SDK](https://github.com/studyplus/Studyplus-Android-SDK)**
+
 [![CircleCI](https://circleci.com/gh/studyplus/Studyplus-Android-SDK-V2/tree/master.svg?style=svg)](https://circleci.com/gh/studyplus/Studyplus-Android-SDK-V2/tree/master) [![](https://jitpack.io/v/studyplus/Studyplus-Android-SDK-V2.svg)](https://jitpack.io/#studyplus/Studyplus-Android-SDK-V2)
 
 ## Requirements
